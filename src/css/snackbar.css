@@ -1,0 +1,52 @@
+.form {
+  margin: 0 auto;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 360px;
+  height: 100%;
+  gap: 16px;
+}
+
+label {
+  text-align: start;
+}
+
+input[name="delay"] {
+  margin-top: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding-left: 16px;
+}
+
+fieldset {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 48px;
+}
+
+fieldset label {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+legend {
+  text-align: start;
+}
+
+button {
+  display: flex;
+  width: 100%;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+}
