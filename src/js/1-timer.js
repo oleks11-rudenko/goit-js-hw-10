@@ -4,16 +4,33 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 let userSelectedDate;
-let intervalId;
-const dataPicker = document.querySelector("#datetime-picker");
-const btn = document.querySelector("button[data-start]");
-btn.disabled = true;
-const dataDays = document.querySelector("[data-days");
-const dataHours = document.querySelector("[data-hours");
-const dataMinutes = document.querySelector("[data-minutes");
-const dataSecondss = document.querySelector("[data-seconds");
+const datetimePicker = document.querySelector("#datetime-picker");
+const startButton = document.querySelector("button[data-start]");
+startButton.disabled = true;
+const dataDays = document.querySelector("[data-days]");
+const dataHours = document.querySelector("[data-hours]");
+const dataMinutes = document.querySelector("[data-minutes]");
+const dataSeconds = document.querySelector("[data-seconds]");
 
-btn.addEventListener("click", startTimer);
+startButton.addEventListener("click", startTimer);
+
+function startTimer() {
+  startButton.disabled = true;
+  datetimePicker.disabled = true;
+  const intervalId = setInterval(() => {
+    const timeLeft = userSelectedDate - Date.now();
+    if (timeLeft <= 0) {
+      clearInterval(intervalId);
+      datetimePicker.disabled = false;
+      return;
+    }
+    const { days, hours, minutes, seconds } = convertMs(timeLeft);
+    dataDays.textContent = String(days).padStart(2, "0");
+    dataHours.textContent = String(hours).padStart(2, "0");
+    dataMinutes.textContent = String(minutes).padStart(2, "0");
+    dataSeconds.textContent = String(seconds).padStart(2, "0");
+  }, 1000);
+}
 
 flatpickr("#datetime-picker", {
   enableTime: true,
@@ -21,45 +38,23 @@ flatpickr("#datetime-picker", {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    if (selectedDates[0] < Date.now()) {
+    userSelectedDate = selectedDates[0];
+    if (userSelectedDate < Date.now()) {
       iziToast.error({
         title: "Error",
-        message: "Please choose a date in the future",
-        position: "topRight",
-        backgroundColor: "#EF4040",
         titleColor: "#FFFFFF",
+        message: "Please choose a date in the future",
         messageColor: "#FFFFFF",
+        backgroundColor: "#EF4040",
         iconUrl: "../img/octagon.svg",
-        iconColor: "#FFFFFF",
+        position: "topRight",
       });
-      btn.disabled = true;
+      startButton.disabled = true;
     } else {
-      btn.disabled = false;
-      userSelectedDate = selectedDates[0].getTime();
+      startButton.disabled = false;
     }
   },
 });
-
-function startTimer() {
-  btn.disabled = true;
-  dataPicker.disabled = true;
-
-  intervalId = setInterval(() => {
-    const timeLeft = userSelectedDate - Date.now();
-
-    if (timeLeft <= 0) {
-      clearInterval(intervalId);
-      dataPicker.disabled = false;
-      return;
-    }
-
-    const { days, hours, minutes, seconds } = convertMs(timeLeft);
-    dataDays.textContent = String(days).padStart(2, "0");
-    dataHours.textContent = String(hours).padStart(2, "0");
-    dataMinutes.textContent = String(minutes).padStart(2, "0");
-    dataSecondss.textContent = String(seconds).padStart(2, "0");
-  }, 1000);
-}
 
 function convertMs(ms) {
   const second = 1000;

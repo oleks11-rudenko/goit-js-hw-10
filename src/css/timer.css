@@ -59,6 +59,11 @@ button:disabled {
   color: #989898;
 }
 
+button:disabled:hover {
+  background-color: #cfcfcf;
+  color: #989898;
+}
+
 button:hover {
   background-color: #6c8cff;
 }
